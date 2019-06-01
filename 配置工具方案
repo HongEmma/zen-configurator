@@ -1,0 +1,17 @@
+The solution of configuration inherit VP is that we firstly implement the simplest configuration solution, 
+after configuration one variation point, all the variation point that have inherit relationship will be 
+updated 
+
+
+1、获取所有的ConfiguraitonUnit(CU)，同时获取该CU对应的类。
+2、判断CU之间的关系，并将所有的CU按照模型的结构组织在一起。 CU之间的关系是父子关系。
+3、利用树桩结构显示CU之间的关系。
+4、调用优先级排序，获取最先配置的VP，并且将该VP对应的CU高亮显示。
+5、用户点击CU，在另外一个窗口打开该CU相关的可变点，供用户进行配置。
+   5.1 如果可变点为类的属性，则直接给该可变点赋值
+   5.2 如果可变点为基数可变性，则更新该CU下的所有CU
+
+特殊情况处理：如果遇到中间类，则将CU过度给该中间类的父类   
+
+
+基数可变点与继承关系的可变点之间具有一定的关系，。
