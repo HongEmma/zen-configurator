@@ -1,0 +1,56 @@
+context CMSModel inv:  (self.citySize=CitySize::Big and self.numberOfPoliceSystem->size()=20 and self.numberOfRescueSystem->size()=20 and self.numberOfTrafficControlSystem->size()=25 and self.numberOfFireSystem->size()=30) or (self.citySize=CitySize::Medium and self.numberOfPoliceSystem->size()=10 and self.numberOfRescueSystem->size()=10 and self.numberOfTrafficControlSystem->size()=15 and self.numberOfFireSystem->size()=20) or (self.citySize=CitySize::Small and self.numberOfPoliceSystem->size()=5 and self.numberOfRescueSystem->size()=5 and numberOfTrafficControlSystem->size()=10 and numberOfFireSystem->size()=10)
+context CMSModel inv:  (self.citySize=CitySize::Big and self.numberWSNSystem->size()=3) or (self.citySize=CitySize::Medium and self.numberWSNSystem->size()=2) or (self.citySize=CitySize::Small and self.numberWSNSystem->size()=1)
+context Network inv:  self.connectedTerminal->forAll(T:Terminal | T.oclIsTypeOf(MobileDevice)) implies self.protocol = Protocol::GSM
+context Network inv:  (self.networkType=NetworkType::PrivateNetwork) and (self.connectedTerminal->forAll(T:Terminal|T.communication->forAll(c:Communication|c.communicationType=CommunicationType::proprietaryCommunicationProtocol)))
+context Network inv:  self.connectedServer->size()>3
+context Network inv:  self.connectedTerminal->forAll(T:Terminal | T.oclIsTypeOf(Workstation) implies T.communication->forAll(c:Communication|c.dataCommunicationConfidentiality=DataCommunicationConfidentiality::nonencrypted))
+context Terminal inv:  (self.communication->forAll(c:Communication|c.communicationLevel=CommunicationLevel::Urgent)) implies (self.refreshTime<3)
+context Server inv:  self.memory>2
+context Server inv:  self.responseTime>10
+context FireStationSystem inv:  self.fireStation->size()<30
+context FireStation inv:  self.fireEngine->size()<40
+context RescueSystem inv:  (self.ownedHelicopter->size()>0 and self.rescueSystemApp->forAll(rapp:RescueSystemApp|rapp.rescueManagement->forAll(rmana:RescueManagement|rmana.helicopterMission->size()>0))) or (self.ownedHelicopter->size()=0 and self.rescueSystemApp->forAll(rapp:RescueSystemApp|rapp.rescueManagement->forAll(rmana:RescueManagement|rmana.helicopterMission->size()>0)))
+context RescueManagement inv: self.helicopterMission->size()<15
+context RescueManagement inv: self.carRescueMission->size()<5
+context RescueSystem inv:  self.ownedHelicopter->size()=0 implies self.helicopterMonitorControlEquip->size()=0
+context TransportVictim inv:  self.duration<24
+context HelicopterMission inv:  self.pilot->size() = self.helicopter->size() * 2
+context Helicopter inv:  (self.helicoptertype = HelicopterType::military  and self.capacity = 1000)  xor (self.helicoptertype = HelicopterType::civilian and self.capacity = 400)
+context PoliceSystem inv:  self.policeStationNumber->size()>0
+context PoliceStation inv: self.robotControlEquip->size()<10
+context PoliceStation inv:  self.robotNumber->size()>0
+context MoterVehicle inv:  self.moterEngine->size() <= 4
+context MoterVehicle inv:  self.moterWheel->size()>0 implies self.moterEngine -> forAll(mE:Engine|mE.power>70000)
+context Wheel inv:  self.wheelNumber > 0 and self.wheelNumber < 4 
+context Wheel inv:  self.radius > 15
+context CMSApp inv: self.numberofAuthenticationMethod->size()>1 and self.numberofAuthenticationMethod->size()<5
+context CrisisManagement inv:(self.crisisManageCapability=CrisisManageCapability::singleCrisis) xor (self.crisisManageCapability=CrisisManageCapability::multipleCrisis)
+context UserAuthentication inv:(self.authenticationManner=UserAuthenticationManner::password) or (self.authenticationManner=UserAuthenticationManner::certificate) or
+(self.authenticationManner=UserAuthenticationManner::biometrics) or
+(self.authenticationManner=UserAuthenticationManner::onetimePassword) or
+(self.authenticationManner=UserAuthenticationManner::challengeResponse)
+context CMSCoreSystem inv:  self.cMSApp->forAll(responseTime.second < 100)
+context CMSCoreSystem inv:  self.cMSApp->forAll(cms | cms.nonfunctionrequirement = NFR::reliability and cms.server->select(reduancy = true)->size() > 0)
+context Crisis inv:  (self.endTime.hour > self.startTime.hour)  and  (self.endTime.second > self.startTime.second)
+context Crisis inv:  (self.crisisStatus = CrisisStatus::active) and ((self.detailedInfoAvailability <=30) and (self.routeplanAvailbility <=30))
+context Crisis inv:  self.crisisEmergencyLevel=EmergencyLevel::veryUrgent and self.crisisRelatedMedium->select(M:Medium|M.mediumType=MediumType::movie or M.mediumType=MediumType::photo or M.mediumType=MediumType::sound)->size()>5
+context CrisisRecord inv:  self.responseTime.second-self.receiveTime.second < 30
+context CrisisRecord inv:  (self.injuryPerson < 10 and self.emergencyLevel =  EmergencyLevel :: general)  or (self.injuryPerson > 10 and self.injuryPerson < 20 and  self.emergencyLevel =  EmergencyLevel :: urgent) or (self.injuryPerson > 20 and  self.emergencyLevel =  EmergencyLevel :: veryUrgent) 
+context Mission inv:  (self.missionEmergencyLevel=EmergencyLevel::veryUrgent and self.priority=1) or (self.missionEmergencyLevel=EmergencyLevel::urgent and self.priority=2) or (self. missionEmergencyLevel=EmergencyLevel::general and self.priority=3)
+context Mission inv:  (self.missionEmergencyLevel=EmergencyLevel::veryUrgent and self.earliestStartTime.second<30) or (self.missionEmergencyLevel=EmergencyLevel::urgent and self. earliestStartTime.second<50) or (self. missionEmergencyLevel=EmergencyLevel::general and self. earliestStartTime.second<80)
+context Mission inv:  (self.missionEmergencyLevel=EmergencyLevel::veryUrgent and self.missionSpecificInfor.qualityOfVehicles=QualityOfVehicle::verygood) or (self. missionEmergencyLevel=EmergencyLevel::urgent and self.missionSpecificInfor.qualityOfVehicles=QualityOfVehicle::good) or (self. missionEmergencyLevel=EmergencyLevel::general and self.missionSpecificInfor.qualityOfVehicles=QualityOfVehicle::normal)
+context CreateMissionFunciton inv:   self.createdMission->select(M:Mission|M.missionStatus=MissionStatus::created or M.missionStatus=MissionStatus::ongoing)->size()<20
+context CMSApp inv: self.numberofAuthenticationMethod->size()>1 and self.numberofAuthenticationMethod->size()<5
+context CrisisManagement inv:(self.crisisManageCapability=CrisisManageCapability::singleCrisis) xor (self.crisisManageCapability=CrisisManageCapability::multipleCrisis)
+context UserAuthentication inv:(self.authenticationManner=UserAuthenticationManner::password) or (self.authenticationManner=UserAuthenticationManner::certificate) or
+(self.authenticationManner=UserAuthenticationManner::biometrics) or
+(self.authenticationManner=UserAuthenticationManner::onetimePassword) or
+(self.authenticationManner=UserAuthenticationManner::challengeResponse)
+context CrisisManagement inv:((self.crisisManageCapability=CrisisManageCapability::singleCrisis) and (self.createMissionFunciton.createdMission->select(M:Mission|M.missionStatus=MissionStatus::ongoing)->size()=1)) xor(self.crisisManageCapability=CrisisManageCapability::multipleCrisis) and (self.createMissionFunciton.createdMission->select(M:Mission|M.missionStatus=MissionStatus::ongoing)->size()>1)
+context CMSCoreSystem inv:  self.cMSApp->forAll(responseTime.second < 100)
+context CMSCoreSystem inv:  self.cMSApp->forAll(cms | cms.nonfunctionrequirement = NFR::reliability and cms.server->select(reduancy = true)->size() > 0)
+context WSNSystem inv:  self.networkNode->size()<12
+context NetworkNode  inv:   (self.sensorNode->size()<50) and (self.memberNode->size()<35) and (self.dataNode->size()<6)
+context NetworkNode inv: (self.dataNode->forAll(d:DataNode|d.radio=Radio::IEEE80211) and self.sensorNode->forAll(s:SensorNode|s.radio=Radio::IEEE80211) and self.memberNode->forAll(m:MemberNode|m.radio=Radio::IEEE80211)) or (self.dataNode->forAll(d:DataNode|d.radio=Radio::ZigBee) and self.sensorNode->forAll(s:SensorNode|s.radio=Radio::ZigBee) and self.memberNode->forAll(m:MemberNode|m.radio=Radio::ZigBee)) or (self.dataNode->forAll(d:DataNode|d.radio=Radio::Bluetooth) and self.sensorNode->forAll(s:SensorNode|s.radio=Radio::Bluetooth) and self.memberNode->forAll(m:MemberNode|m.radio=Radio::Bluetooth))
+context NetworkNode inv: (self.dataNode.encypt=true and self.sensorNode.encypt=true and self.memberNode.encypt=true) xor (self.dataNode.encypt=false and self.sensorNode.encypt=false and self.memberNode.encypt=false) 
+context WSNSystem inv: self.dataDeliveryManner=DataDeliveryManner::multipleHops implies self.networkNode->forAll(n:NetworkNode|n.sensorNode->forAll(S:SensorNode|S.radio=Radio::ZigBee))

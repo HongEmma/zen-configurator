@@ -1,0 +1,190 @@
+context SubseaControlSystem inv:  self.oclIsTypeOf(AllHydraulicSystem) implies (self.semApp->size() = 0 and self.subseaField->forAll(s:SubseaField|s.xmasTree->forAll(t:XmasTree| 
+t.controlModule->forAll(c:ControlModule| c.sEM->size() = 0))))
+context SubseaControlSystem inv: self.subseaField->forAll(s:SubseaField|s.xmasTree->forAll(t:XmasTree|t.controlModule->forAll(c:ControlModule| c.sEM->size() = self.semApp->size())))
+context SubseaControlSystem inv:  (self.detailedSystemType = DetailedControlTye::MultiplexedElectrohydraulic) implies self.subseaField->forAll(x:SubseaField|(x.unit = DistanceUnit::KM and x.distance = 5) 
+or (x.unit = DistanceUnit::Mile and x.distance = 3.1))
+context SubseaControlSystem inv:  self.detailedSystemType = DetailedControlTye::SequentialHydraulic implies self.subseaField->forAll(x:SubseaField| x.xmasTree->forAll(t:XmasTree|t.valve->forAll
+(v:Valve|v.openpressure = 50)))
+context SubseaControlSystem inv:  self.detailedSystemType = DetailedControlTye::PilotedHydraulic implies self.subseaField->forAll(s:SubseaField|s.xmasTree->forAll(t:XmasTree| t.sensor->size() = 0))
+context SubseaControlSystem inv:  (self.oclIsTypeOf(AllHydraulicSystem) and (self.triggerType = SignalType::HydraulicSignal and self.controlType = SignalType::HydraulicSignal ) ) or 
+(self.oclIsTypeOf(ElectrohydraulicSystem) and (self.triggerType = SignalType::ElectricSignal and self.controlType = SignalType::HydraulicSignal )) or 
+(self.oclIsTypeOf(AllElectricSystem) and (self.triggerType = SignalType::ElectricSignal and self.controlType = SignalType::ElectricSignal ))
+context SubseaControlSystem inv:  self.detailedSystemType = DetailedControlTye::DirectHydraulic implies (self.semApp->size() = 0 and self.subseaField->forAll(s:SubseaField|s.xmasTree->forAll
+(t:XmasTree| t.controlModule->size() = 0)))
+context SubseaControlSystem inv:  (self.oclIsTypeOf(ElectrohydraulicSystem) or self.oclIsTypeOf(AllElectricSystem) )implies (self.semApp->size() = 5 and self.subseaField->forAll
+(s:SubseaField|s.xmasTree->forAll(t:XmasTree| t.controlModule->size() = 5)))
+context SubseaControlSystem inv:  self.subseaField->forAll(x:SubseaField| self.maxPressure = x.designPressure)
+context SubseaControlSystem inv:  self.detailedSystemType = DetailedControlTye::DirectHydraulic implies self.subseaField->forAll(x:SubseaField|(x.unit = DistanceUnit::KM and x.distance = 15) 
+or (x.unit = DistanceUnit::Mile and x.distance = 9.3))
+context SubseaControlSystem inv:  self.detailedSystemType = DetailedControlTye::PilotedHydraulic implies self.subseaField->forAll(x:SubseaField|(x.unit = DistanceUnit::KM and 
+x.distance > 4 and x.distance < 25) or (x.unit = DistanceUnit::Mile and x.distance >2.5 and x.distance < 15.5))
+context SubseaControlSystem inv:  (self. productionSysType = ProductionSystemType::WithPressProtection implies self.hasHIPPS = true) and ((not (self. productionSysType = 
+ProductionSystemType::WithPressProtection)) implies self.hasHIPPS = false)
+context SubseaControlSystem inv: self.iWCS->size() = self.mCS->size()
+context SubseaControlSystem inv: self.mCS->size() = self.mcsApp->size()
+context SubseaControlSystem inv: self.subseaField->size () = self.semApp->size () / 2
+context ControlModule inv:  (self.redudent = RedundantLevel::NoneRedundant and self.sEM->size() = 1) or (self.redudent = RedundantLevel::FullyRedundant implies self.sEM->size() = 2)
+context ControlModule inv:  self.sEM->forAll(s:SEM|(self.elecPowerInterface = ElectricalPowerTyep::High and s.shockLevel = ShockLevel::Q1) or 
+((self.elecPowerInterface = ElectricalPowerTyep::Medium or self.elecPowerInterface = ElectricalPowerTyep::Low) and s.shockLevel = ShockLevel::Q2))
+
+context ProductionChokeValve inv:  self.pressureDrop = self.inletPressure - self.outletPressure
+context ProductionChokeValve inv:  self.pressureDrop/self.inletPressure = 0.6
+context ProductionChokeValve inv:  (self.type = ChokeType::Positive and (self.trimType = TrimType::RotatingDisc or self.trimType = TrimType::NeedleSeat or self.trimType = TrimType::PlugCage))
+or 
+(self.type = ChokeType::Adjustable and (self.trimType = TrimType::SlidingSleeveCage or self.trimType = TrimType::Multistage or self.trimType = TrimType::CageExternalSleeve))
+context IWCS inv:  (self.installType = IwcsInstallType::InsideSEM and self.configType = ConfigurationType::FullyIntergrated) or 
+ (self.installType = IwcsInstallType::AtSCM and self.configType = ConfigurationType::Interfaced)
+or  (self.installType = IwcsInstallType::Others and self.configType = ConfigurationType::Standalone)
+
+context ScatteredSubseaField inv:  self.xmasTree->forAll(x:XmasTree|(x.preRating = PressureRating::FiveKsi implies self.designPressure=5) and (x.preRating = PressureRating::TenKsi implies 
+self.designPressure=10) and (x.preRating = PressureRating::FifteenKsi implies self.designPressure=15))
+context ScatteredSubseaField inv:  self.xmasTree->forAll(x:XmasTree|self.type = FieldType::Gas implies x.treeType=TreeType::VXT)
+context XmasTree inv:  ((self.serviceType = ServiceType::Sour and self.corrosivity = CorrosivityDegree::Noncorrosive and self.partialPressure = 7) and self.material=MaterialType::DD ) 
+
+or ((self.serviceType = ServiceType::Sour and self.corrosivity = CorrosivityDegree::Slightylycorrosive and self.partialPressure<30 and self.partialPressure>7 ) 
+
+and self.material=MaterialType::EE) or ((self.serviceType = ServiceType::Sour and self.corrosivity = CorrosivityDegree::ModeratelytoHighly and 
+
+self.partialPressure>30) and self.material=MaterialType::FF ) or ((self.serviceType = ServiceType::Sour and self.corrosivity = CorrosivityDegree::Verycorrosive 
+
+and self.partialPressure>30) and self.material=MaterialType::HH ) or ((self.serviceType <> ServiceType::Sour and self.corrosivity = 
+
+CorrosivityDegree::Noncorrosive and self.partialPressure<7) and  self.material=MaterialType::AA ) or ((self.serviceType <> ServiceType::Sour and 
+
+self.corrosivity = CorrosivityDegree::Slightylycorrosive and self.partialPressure<30 and self.partialPressure>7 ) and  self.material=MaterialType::BB) or 
+
+((self.serviceType <> ServiceType::Sour and self.corrosivity = CorrosivityDegree::ModeratelytoHighly and self.partialPressure>30) and 
+
+self.material=MaterialType::CC )
+context XmasTree inv:  self.material = MaterialType::HH implies needInjection = false
+context XmasTree inv:  self.needInjection = false implies not (self.valve->exists(x:Valve| x.oclIsTypeOf(InjectionChokeValve) or x.oclIsTypeOf(ChemicalInjectionControlValve) or x.oclIsTypeOf
+
+(MethanolInjectionValve)))
+context XmasTree inv:  self.treeType=TreeType::HXT implies not (self.valve->exists(x:Valve|x.oclIsTypeOf(ProductionSwabValve) or x.oclIsTypeOf(AnnulusSwabValve)))
+
+context XmasTree inv:  (self.preRating=PressureRating::FiveKsi or self.preRating=PressureRating::TenKsi) implies
+self.waterDepth = 1000
+context XmasTree inv:  (self.waterDepth < 400 and self.installType = InstallationVesselType::Jackup) or (self.waterDepth > 4000 and self.installType = 
+
+InstallationVesselType::Semisubmersible)
+context XmasTree inv:  ((self.waterDepth > 400 and self.waterDepth < 2000) and self.installType = InstallationVesselType::Semisubmersible) or ((self.waterDepth > 2000 and 
+
+self.waterDepth<4000) and (self.installType = InstallationVesselType::Semisubmersible or self.installType = InstallationVesselType::Drillship))
+
+context XmasTree inv:  (self.minTem = TemperatrueRating::K and self.maxTem <> TemperatrueRating::K) or
+(self.minTem = TemperatrueRating::L and (self.maxTem <> TemperatrueRating::K and self.maxTem <> TemperatrueRating::L)) or
+(self.minTem = TemperatrueRating::P and (self.maxTem <> TemperatrueRating::K and self.maxTem <> TemperatrueRating::L and self.maxTem <> TemperatrueRating::P)) or
+(self.minTem = TemperatrueRating::R and (self.maxTem <> TemperatrueRating::K and self.maxTem <> TemperatrueRating::L and self.maxTem <> TemperatrueRating::P and self.maxTem <> TemperatrueRating::R))
+
+context XmasTree inv:  (self.maxTem = TemperatrueRating::V and self.minTem <> TemperatrueRating::V) or
+(self.maxTem = TemperatrueRating::U and (self.minTem <> TemperatrueRating::V and self.minTem <> TemperatrueRating::U)) or
+(self.maxTem = TemperatrueRating::T and (self.minTem <> TemperatrueRating::V and self.minTem <> TemperatrueRating::U and self.minTem <> TemperatrueRating::T)) or
+(self.maxTem = TemperatrueRating::S and (self.minTem <> TemperatrueRating::V and self.minTem <> TemperatrueRating::U and self.minTem <> TemperatrueRating::T and self.minTem <> TemperatrueRating::S))
+context XmasTree inv:  self.completion = TreeCompletionType::Simple implies (self.treeType = TreeType::Mudline)
+context XmasTree inv:  (self.purpose = TreePurposeType::Production and self.wellType = WellType::ProductionWell) or (self.purpose = TreePurposeType::Injection and (self.wellType = WellType::WaterInjectionWell or self.wellType = WellType::GasInjectionWell))
+context XmasTree inv:
+self.completion = TreeCompletionType::Simple implies (self.treeType = TreeType::Mudline)
+
+context XmasTree inv:
+self.purpose = TreePurposeType::Production implies self.wellType = WellType::ProductionWell
+context XmasTree inv:  ((self.boreSize = BoreSize::Three or self.boreSize = BoreSize::Four) and self.completion = TreeCompletionType::DiverAssist) or  
+(self.boreSize = BoreSize::Five and self.completion = TreeCompletionType::Diverless)
+or  ((self.boreSize = BoreSize::Seven  or self.boreSize = BoreSize::Nine) and self.completion = TreeCompletionType::Guidelineless)
+
+context SensorController inv:  (self.oclIsTypeOf(SubseaFlowMeterController) and self.sensor.oclIsTypeOf(SubseaFlowMeter))
+or 
+(self.oclIsTypeOf(TemperatureTransducerController) and self.sensor.oclIsTypeOf(TemperatureTransducer))
+or 
+(self.oclIsTypeOf(PositionSensorController) and self.sensor.oclIsTypeOf(PositionSensor))
+or 
+(self.oclIsTypeOf(DownholeMonitorController) and self.sensor.oclIsTypeOf(DownholeMonitor))
+or 
+(self.oclIsTypeOf(PigDetectorController) and self.sensor.oclIsTypeOf(PigDetector))
+or  
+(self.oclIsTypeOf(CorrosionProbsController) and self.sensor.oclIsTypeOf(CorrosionProbs))
+or 
+(self.oclIsTypeOf(SandDetectorController) and self.sensor.oclIsTypeOf(SandDetector))
+or 
+(self.oclIsTypeOf(ErosionProbsController) and self.sensor.oclIsTypeOf(ErosionProbs))
+or 
+(self.oclIsTypeOf(HydrocarbonLeakDetectorController) and self.sensor.oclIsTypeOf(HydrocarbonLeakDetector))
+or 
+(self.oclIsTypeOf(CombinedPTTransducerController) and self.sensor.oclIsTypeOf(CombinedPTTransducer))
+or 
+(self.oclIsTypeOf(PressureTransducerController) and self.sensor.oclIsTypeOf(PressureTransducer))
+or 
+(self.oclIsTypeOf(SCSSVController) and self.sensor.oclIsTypeOf(SCSSV))
+or 
+(self.oclIsTypeOf(PressureTankRegulatorSW) and self.sensor.oclIsTypeOf(PressureTankRegulator))
+
+
+context SemApp inv:  self.deviceController->forAll(x:DeviceController| (x.oclIsTypeOf(SensorController)) and 
+
+x.location='Sensor')
+context SemApp inv:  self.deviceController->forAll(x:DeviceController| (x.oclIsTypeOf(ValveController)) and 
+
+x.location='Valve')
+context SemApp inv:  
+self.deviceController->exists(x:DeviceController| x.oclIsTypeOf(PressureTransducerController) and x.location='HydraulicValve')
+
+context ValveController inv:  (self.oclIsTypeOf(ChemicalInjectionControlValveController) and self.valve.oclIsTypeOf(ChemicalInjectionControlValve))
+or 
+(self.oclIsTypeOf(AnnulusAccessValveController) and self.valve.oclIsTypeOf(AnnulusAccessValve))
+or 
+(self.oclIsTypeOf(InjectionChokeValveController) and self.valve.oclIsTypeOf(InjectionChokeValve))
+or 
+(self.oclIsTypeOf(ProductionChokeValveController) and self.valve.oclIsTypeOf(ProductionChokeValve))
+or 
+(self.oclIsTypeOf(ManifoldValveController) and self.valve.oclIsTypeOf(ManifoldValve))
+or 
+(self.oclIsTypeOf(CrossoverValveController) and self.valve.oclIsTypeOf(CrossoverValve))
+or 
+(self.oclIsTypeOf(AnnulusWingValveController) and self.valve.oclIsTypeOf(AnnulusWingValve))
+or 
+(self.oclIsTypeOf(ProductionWingValveController) and self.valve.oclIsTypeOf(ProductionWingValve))
+or 
+(self.oclIsTypeOf(ScaleInhibitorInjectionValveController) and self.valve.oclIsTypeOf(ScaleInhibitorInjectionValve))
+or 
+(self.oclIsTypeOf(ProductionMasterValveController) and self.valve.oclIsTypeOf(ProductionMasterValve))
+or 
+(self.oclIsTypeOf(ProductionSwabValveController) and self.valve.oclIsTypeOf(ProductionSwabValve))
+or 
+(self.oclIsTypeOf(AnnulusMasterValveController) and self.valve.oclIsTypeOf(AnnulusMasterValve))
+or 
+(self.oclIsTypeOf(AnnulusSwabValveController) and self.valve.oclIsTypeOf(AnnulusSwabValve))
+
+context XmasTree inv:
+self.purpose = TreePurposeType::Injection implies (self.wellType = WellType::WaterInjectionWell or self.wellType = WellType::GasInjectionWell)
+
+context ControlModule inv:
+self.redudent = RedundantLevel::NoneRedundant implies self.sEM->size() = 1
+
+context ControlModule inv:
+self.redudent = RedundantLevel::FullyRedundant implies self.sEM->size() = 2
+
+context IWCS inv:
+(self.installType = IwcsInstallType::InsideSEM implies self.configType = ConfigurationType::FullyIntergrated) and (self.installType = IwcsInstallType::AtSCM implies self.configType = ConfigurationType::Interfaced)
+and (self.installType = IwcsInstallType::Others implies self.configType = ConfigurationType::Standalone)
+
+context SEM inv:
+self.valves->forAll(v:Valve|v.openpressure > self.lowDesignPressure and v.openpressure < self.highDesignPressure)
+
+context ControlModule inv:
+self.sEM->forAll(s:SEM|self.elecPowerInterface = ElectricalPowerTyep::High implies s.shockLevel = ShockLevel::Q1)
+
+context ControlModule inv:
+self.sEM->forAll(s:SEM|(self.elecPowerInterface = ElectricalPowerTyep::Medium or self.elecPowerInterface = ElectricalPowerTyep::Low) implies s.shockLevel = ShockLevel::Q2)
+
+context XmasTree inv:
+(self.boreSize = BoreSize::Three or self.boreSize = BoreSize::Four) implies self.completion = TreeCompletionType::DiverAssist and self.boreSize = BoreSize::Five implies self.completion = TreeCompletionType::Diverless
+and (self.boreSize = BoreSize::Seven  or self.boreSize = BoreSize::Nine) implies self.completion = TreeCompletionType::Guidelineless
+
+context ProductionChokeValve inv:
+self.type = ChokeType::Positive implies (self.trimType = TrimType::RotatingDisc or self.trimType = TrimType::NeedleSeat or self.trimType = TrimType::PlugCage)
+
+context ProductionChokeValve inv:
+self.type = ChokeType::Adjustable implies (self.trimType = TrimType::SlidingSleeveCage or self.trimType = TrimType::Multistage or self.trimType = TrimType::CageExternalSleeve)
+
+
+
+

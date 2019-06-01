@@ -1,0 +1,189 @@
+vpName = {
+				//TestSubseaSystem5
+				"root::SubseaControl::SystemDesignView::SystemModel::SubseaControlSystem",
+				"root::SubseaControl::SystemDesignView::SystemModel::SubseaControlSystem::triggerType",
+				"root::SubseaControl::SystemDesignView::SystemModel::SubseaControlSystem::controlType",
+				//TestSubseaSystem11
+				"root::SubseaControl::SystemDesignView::SystemModel::SubseaControlSystem::productionSysType",
+				"root::SubseaControl::SystemDesignView::SystemModel::SubseaControlSystem::hasHIPPS",
+				//TestSubseaSystem12_14
+				"root::SubseaControl::SystemDesignView::SystemModel::SubseaControlSystem::systemType",
+				"root::SubseaControl::SystemDesignView::SystemModel::SubseaControlSystem::detailedSystemType",
+				//TestSubseaSystem2
+				"root::SubseaControl::SystemDesignView::SystemModel::SubseaControlSystem::detailedSystemType",
+				"root::SubseaControl::SystemDesignView::SystemModel::SubseaControlSystem::subseaField",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::SubseaField::distance",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::SubseaField::unit",
+
+				//TestSubseaSystem8
+//				"root::SubseaControl::SystemDesignView::SystemModel::SubseaControlSystem::subseaField",
+				"root::SubseaControl::SystemDesignView::SystemModel::SubseaControlSystem::maxPressure",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::SubseaField::designPressure",
+				//TestSubseaSystem1
+				"root::SubseaControl::SystemDesignView::SystemModel::SubseaControlSystem",
+				"root::SubseaControl::SystemDesignView::SystemModel::SubseaControlSystem::semApp",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::SubseaField::xmasTree",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::controlModule",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::ElectricalModel::ControlModule::sEM",
+				//TestSubseaSystem4
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::sensor",
+
+				//TestSubseafield20
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::preRating",
+				
+				//TestSubseafield21
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::SubseaField::type",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::treeType",
+				//TestXmasTree22
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::serviceType",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::corrosivity",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::partialPressure",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::material",
+				
+				//TestXmasTree24
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::needInjection",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::material",
+				
+				//TestXmasTree26
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::preRating",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::waterDepth",
+				
+				//TestXmasTree27_28
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::waterDepth",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::SubseaFieldModel::XmasTree::installType",
+				
+				//TestSEM18_19
+				"root::SubseaControl::SystemDesignView::SubseaHardware::ElectricalModel::Valve",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::ElectricalModel::ProductionChokeValve::pressureDrop",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::ElectricalModel::ProductionChokeValve::inletPressure",
+				"root::SubseaControl::SystemDesignView::SubseaHardware::ElectricalModel::ProductionChokeValve::outletPressure",
+				
+				
+				//TestSemApp33_35
+				"root::SubseaControl::SystemDesignView::SubseaSoftware::SEM::SemApp::deviceController",
+				"root::SubseaControl::SystemDesignView::SubseaSoftware::SEM::DeviceController",
+				
+				
+				};
+
+		
+		
+idList = {
+				//TestSubseaSystem5
+				"SubseaControlSystem[1]",
+				"SubseaControlSystem[1]::triggerType",
+				"SubseaControlSystem[1]::controlType",
+				//TestSubseaSystem11
+				"SubseaControlSystem[1]::productionSysType",
+				"SubseaControlSystem[1]::hasHIPPS",
+				//TestSubseaSystem12_14
+				"SubseaControlSystem[1]::systemType",
+				"SubseaControlSystem[1]::detailedSystemType",
+				//TestSubseaSystem2
+				"SubseaControlSystem[1]::detailedSystemType",
+				"SubseaControlSystem[1]::subseaField",//1
+				"SubseaControlSystem[1]::SubseaField[1]::distance",
+				"SubseaControlSystem[1]::SubseaField[1]::unit",
+				//TestSubseaSystem9
+
+				//TestSubseaSystem8
+				"SubseaControlSystem[1]::maxPressure",
+				"SubseaControlSystem[1]::SubseaField[1]::designPressure",
+				//TestSubseaSystem1
+				"SubseaControlSystem[1]",
+				"SubseaControlSystem[1]::semApp",//1
+				"SubseaControlSystem[1]::SubseaField[1]::xmasTree",//1
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::controlModule",//1
+				
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::ControlModule[1]::sEM",
+				
+				
+				//TestSubseaSystem4
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::sensor",
+
+
+				//TestSubseafield20
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::preRating",
+				
+				//TestSubseafield21
+				"SubseaControlSystem[1]::SubseaField[1]::type",
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::treeType",
+				
+				//TestXmasTree22
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::serviceType",
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::corrosivity",
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::partialPressure",
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::material",
+				
+				
+				//TestXmasTree24
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::needInjection",
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::material",
+				
+				//TestXmasTree26
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::preRating",
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::waterDepth",
+				
+				//TestXmasTree27_28
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::waterDepth",
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::installType",
+				
+				//TestSEM18_19
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::Valve",
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::ProductionChokeValve[1]::pressureDrop",
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::ProductionChokeValve[1]::inletPressure",
+				"SubseaControlSystem[1]::SubseaField[1]::XmasTree[1]::ProductionChokeValve[1]::outletPressure",
+				
+				//TestSemApp33_35
+				"SubseaControlSystem[1]::SemApp[1]::deviceController",//1
+				"SubseaControlSystem[1]::SemApp[1]::DeviceController[1]",
+				
+				};
+		
+valuesList = {
+				//TestSubseaSystem5
+				"ElectrohydraulicSystem", "SignalType::ElectricSignal", "SignalType::ElectricSignal",
+				//TestSubseaSystem11
+				"ProductionSystemType::RateMaxShutinPress", "true",
+				//TestSubseaSystem12_14
+				"ControlSystemType::AllHydraulicType", "DetailedControlTye::DirectHydraulic",
+				//TestSubseaSystem2
+				"DetailedControlTye::DirectElectric", "1", "4", "DistanceUnit::Mile", 
+				//TestSubseaSystem9
+//				"DetailedControlTye::DirectHydraulic", "1", "0", "DistanceUnit::KM",
+				//TestSubseaSystem10
+//				"DetailedControlTye::DirectHydraulic", "1", "1", "DistanceUnit::KM",
+				//TestSubseaSystem8
+				"0", "10", 
+				//TestSubseaSystem1
+				"ElectrohydraulicSystem", "1",  "1", 
+				"1",
+				"2",  
+				//TestSubseaSystem4
+				"3",
+				//TestSubseaSystem6
+//				"DetailedControlTye::DirectHydraulic", "0", "1", "2", "10", "0",
+				//TestSubseaSystem7
+//				"ElectrohydraulicSystem", "0", "1", "2", "1", "5",
+				//TestSubseafield20
+				"PressureRating::FiveKsi",
+				//TestSubseafield21
+				"FieldType::Gas", 
+				"TreeType::VXT",
+				//TestXmasTree22
+				"ServiceType::Sour", "CorrosivityDegree::Slightylycorrosive", "6", "MaterialType::AA",
+				
+				//TestXmasTree24
+				"true", "MaterialType::AA",
+				//TestXmasTree26
+				"PressureRating::FiveKsi", "1999",
+				//TestXmasTree27_28
+				"399", "InstallationVesselType::Semisubmersible",
+				//TestSEM18_19
+				"ProductionChokeValve", "1", "1", "1",
+				
+				//TestSemApp33_35
+				"1", "PigDetectorController",
+				};
+		
+	

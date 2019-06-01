@@ -1,0 +1,290 @@
+values = {
+			//System *********************************
+			{"fullyAutomated", "hybrid", "semiAutomated"}, //operatingMode
+			{"1", "2"}, //automaticGuidedVehicle
+			{"1", "2"}, //automaticIdentificationDataCollection
+			{"1", "2"},//automatedStorageRetrievalSystem
+			{"1", "2"},//conveyor
+			//AGV Hardware *********************************
+			{"1", "2"},//aGV
+			{"bluetooth", "NFC", "wifi"},//connectivity
+
+			{"1", "2"},//nevigation
+			{"frequencySelectMode", "magenaticMode", "pathSelectMode"},//pathDecision
+			{"GeoGuidance", "VisionGuidance"/*, "NaturalFeaturesNavigation", "InertialNavigation", "Wired", "GuideTape", "LaserTargetNavigation"*/}, //Navigation
+
+			{"1", "2"},//systemManagermentInterface
+			{"centralLoging", "CRTColorGraphicDisplay", "locatorPannel"},//interface
+
+			{"1", "2"},//sensors
+			{"MultiRayLEDScanner", "LaserScanner", "MagneticGuideSensor"/*, "VisionStereoCamera"*/}, //Sensor
+
+			{"1", "2"},//trafficControll
+			{"ZoneControl", "CombinationControl",}, //TrafficControl
+
+			{"1", "2"},//steeringControl
+			{"differentialSteeringControl", "steerdWheelControl", "hybrid"},//steeringType
+
+			{"1", "2"},//vehicle
+			{"AssemblyLineVehicle", "LightLoadAGV"/*, "ForkTruck", "PalletTruck", "UnitLoadVehicle"*/,"TowingVehicle"}, //Vehicle
+			{"1", "2", "5", "10", "15"},//heightLimit
+			{"1", "2", "5", "10", "15"},//weightLimit
+			{"10", "50", "80", "150", "1"},//speed
+			{"1", "2", "5", "10", "15"},//volumeLimit
+			{"manualBatterySwap", "automaticBatterySwap", "autoamticOppertunityCharging"},//batteryCharging
+
+			{"1", "2"},//conveyor
+
+			//AGV Software *********************************
+			{"1", "2"},//aVGApp
+			{"bluetooth", "NFC", "wifi"},//Connectivity
+
+			{"1", "2"},//navigationImplementation
+			{"frequencySelectMode", "magenaticMode", "pathSelectMode"},//pathDecision
+			{"GuideTapeNavigationImplentation", "WiredNavigationImplementation"/*, "InertialNavigationImplementation", "NaturalFeaturesNavigationImplementation", "VisionGuidanceNavigationImplementation", "GeoGuidanceNavigationImplementation","LaserTargetNavigationImplementation"*/}, //NavigationImplementation
+
+			{"1", "2"},//systemManagermentInterfaceImplementation
+			{"centralLoging", "CRTColorGraphicDisplay", "locatorPannel"},//interface
+
+			{"1", "2"},//sensorController
+			{"hello", "test", "v1.0"},//competibleModel
+			{"v1.0"},//driverVersion
+			{"VisionStereoCameraController", "LaserScannerController"/*, "MagneticGuideSensorController", "MultiRayLEDScannerController"*/}, //SensorController
+
+			{"1", "2"},//trafficControlImplementation
+			{"ZoneControlImplementation", "CombinationControlImplementation"}, //TrafficControlImplementation
+
+			{"1", "2"},//steeringControllerImplementation
+			{"differentialSteeringControl", "steerdWheelControl", "hybrid"},//steeringType
+
+			{"1", "2"},//vehicleController
+			{"1", "2", "5", "10", "15"},//heightLimit
+			{"1", "2", "5", "10", "15"},//weightLimit
+			{"10", "50", "80", "150", "1"},//speed
+			{"1", "2", "5", "10", "15"},//volumeLimit
+			{"manualBatterySwap", "automaticBatterySwap", "autoamticOppertunityCharging"},//batteryCharging
+			{"TowingVehicleController", "UnitLoadVehicleController", "PalletTruckController"/*, "ForkTruckController", "LightLoadAGVController", "AssemblyLineVehicleController"*/}, //VehicleController
+
+			//AIDC Hardware *********************************
+			{"1", "2"},//aIDC
+
+			{"1", "2"},//oneDimensionalBarcodeSymbologies
+			{"codabar", "code128", "code39"/*, "code93", "EANCode", "GS1Databar","ITF","MSIPlessey","UPC"*/},//barCodeType
+			{"fixed", "mobile"},//scanner
+
+			{"1", "2"},//twoDimensionalBarcodeSymbologies
+			{"AZTEC", "dataMatrixCode", "PDF417", "QRCode"},//barCodeType
+			{"fixed", "mobile"},//scanner
+//			{"hello", "test", "v1.0"},//model
+
+			{"1", "2"},//rFID
+			{"fixed", "mobile"},//scanner
+//			{"hello", "test", "v1.0"},//model
+
+			{"1", "2"},//voiceRecongnizers
+//			{"hello", "test", "v1.0"},//model
+
+			{"1", "2"},//cubingWeighing
+			{"1", "2"},//photoelectricRetroReflective
+//			{"hello", "test", "v1.0"},//model
+
+			//AIDC Software *********************************
+			{"1", "2"},//aIDCApp
+
+			{"1", "2"},//oneDimensionalBarcodeSymbologiesController
+			{"codabar", "code128", "code39"/*, "code93", "EANCode", "GS1Databar","ITF","MSIPlessey","UPC"*/},//barCodeType
+			{"fixed", "mobile"},//scanner
+			{"v1.0"},//driverVersion
+			{"hello", "test", "v1.0"},//competibleModel
+
+			{"1", "2"},//twoDimensionalBarcodeSymbologiesController
+			{"AZTEC", "dataMatrixCode", "PDF417", "QRCode"},//barCodeType
+			{"fixed", "mobile"},//scanner
+			{"v1.0"},//driverVersion
+			{"hello", "test", "v1.0"},//competibleModel
+
+			{"1", "2"},//rFIDController
+			{"fixed", "mobile"},//scanner
+			{"v1.0"},//driverVersion
+			{"hello", "test", "v1.0"},//competibleModel
+
+			{"1", "2"},//voiceRecongnizersController
+			{"v1.0"},//driverVersion
+			{"hello", "test", "v1.0"},//competibleModel
+
+			{"1", "2"},//cubingWeighingCalculator
+			{"1", "2"},//photoelectricRetroReflectiveController
+			{"v1.0"},//driverVersion
+			{"hello", "test", "v1.0"},//competibleModel
+
+			//ASRS *********************************
+			{"1", "2"},//aSRS
+			{"UMMLoad", "Carousel", "VLM"},//ASRS
+			{"1", "2"},//aSRSApp
+			{"UMMLoadApp", "CarouselApp", "VLMApp"},//ASRSApp
+
+			//UMMLoadHardware *********************************
+			{"Cartons", "Contrainers"/*, "Hybrid", "Pallets", "Totes", "Trays"*/},//typeOfProduct
+			{"microload", "miniLoad", "unitLoad"},//ASRSType
+
+			{"1", "2"},//aisels
+//			{"1", "2", "5", "10", "15"},//lengthOfAisel
+
+			{"1", "2"},//shelves
+
+			{"1", "2"},//sensor
+//			{"hello", "test", "v1.0"},//model
+//			{"norway"},//manufacturer
+			{"DistanceSensor", "PhotoelectricRetroReflective"},//UMMSensor
+
+			{"1", "2"},//cranes
+			{"1", "2", "5", "10", "15"},//maxWeighLimit
+//			{"1", "2", "5", "10", "15"},//horizentalSpeed
+			{"miniLoadCrane", "microLoadCrane", "unitLoadCrane"},//craneType
+
+			{"1", "2"},//lifter
+			{"1", "2", "5", "10", "15"},//maxWeightofLoad
+			{"1","9"},//verticalSpeed
+			{"20","50"},//maxWidthOfLoad
+			{"20","50"},//maxHeightOfLoad
+			{"20","50"},//maxLengthOfLoad
+			{"20","50"},//maxHeight
+			{"20","50"},//minHeight
+
+			{"1", "2"},//orderPicker
+			{"1", "2", "5", "10", "15"},//rangeOfFork
+			{"true", "false"},//doubleLoadHandling
+			{"moveable", "fixed"},//forkType
+
+			//UMMLoadSoftware *********************************
+			{"Cartons", "Contrainers"/*, "Hybrid", "Pallets", "Totes", "Trays"*/},//productType
+			{"microload", "miniLoad", "unitLoad"},//ASRSType
+
+			{"1", "2"},//sensorController
+			{"1.0"},//driverVersion
+			{"hello", "test", "v1.0"},//competibleModel
+//			{"norway"},//manufacturer
+			{"DistanceSensorController", "PhotoelectricRetroReflectiveController"},//UMMSensorController
+
+			{"1", "2"},//craneController
+			{"1", "2", "5", "10", "15"},//maxWeightLimit
+//			{"1","9"},//horizentalSpeed
+			{"miniLoadCrane", "microLoadCrane", "unitLoadCrane"},//craneType
+
+			{"1", "2"},//lifterController
+			{"1","9"},//verticleSpeed
+			{"1", "2", "5", "10", "15"},//maxWeightOfLoad
+			{"20","50"},//maxHeightOfLoad
+			{"20","50"},//maxWidthOfLoad
+			{"20","50"},//maxLengthOfLoad
+			{"20","50"},//maxHeight
+			{"20","50"},//minHeight
+
+			{"1", "2"},//forkController
+			{"1", "2", "5", "10", "15"},//rangeOfFork
+			{"moveable", "fixed"},//forkType
+			{"true", "false"},//doubleLoadHandling
+
+			//CarouselHardware *********************************
+			{"horizental", "vertical"},//type
+
+			{"1", "2"},//carouselInterface
+			{"1","9"},//size
+//			{"hello", "test", "v1.0"},//model
+			{"touch", "buttons"},//interfaceType
+
+			{"1", "2"},//bins
+			{"1", "2", "5", "10", "15"},//binHeight
+			{"1", "2", "5", "10", "15"},//binWidth
+			{"1", "2", "5", "10", "15"},//binLength
+			{"", "", "", "", ""},//shelves
+
+			{"1", "2"},//lightToPick
+//			{"hello", "test", "v1.0"},//model
+
+			{"1", "2"},//overlTrack
+			{"1","9"},//weightLimit
+			{"1","9"},//binsLimit
+			{"1", "2"},//bins
+
+			{"1", "2"},//rotator
+			{"clockwise", "anticlockwise"},//rotationDirection
+
+			//CarouselSoftware *********************************
+			{"horizental", "vertical"},//type
+
+			{"1", "2"},//carouselInterfaceController
+			{"v1.0"},//driverVersion
+			{"hello", "test", "v1.0"},//competibleModel
+			{"touch", "buttons"},//interfaceType
+
+			{"1", "2"},//lightToPickController
+			{"v1.0"},//driverVersion
+			{"hello", "test", "v1.0"},//competibleModel
+
+			{"1", "2"},//rotatorController
+			{"clockwise", "anticlockwise"},//rotationDirection
+			//VLMHardware *********************************
+			{"1","9"},//heightOfVLM
+			{"1","9"},//widthOfVLM
+			{"1","9"},//lengthOfVLM
+			{"frontBack", "twoFloors"},//bayLocation
+			{"1","9"},//numberOfBays
+
+			{"1", "2"},//scanner
+//			{"hello", "test", "v1.0"},//model
+			{"handheld", "fixed"},//scannerType
+//			{"norway"},//manufacturer
+			{"BarCodeScanner", "QRScanner"},//Scanner
+
+			{"1", "2"},//orderPIcker
+			{"1","9"},//heightOfPickerStage
+
+			{"1", "2"},//verticleLift
+			{"1","9"},//verticalSpeedOfExtracter
+			{"1","9"},//weightLimit
+			{"1","9"},//widthLimit
+			{"1","9"},//extractionSpeed
+			{"single", "double"},//bay
+			{"1","9"},//verticalMovementSpeed
+
+			{"1", "2"},//vLMInterface
+			{"20", "30", "40", "100", "110"},//displaySize
+			{"true", "false"},//moveable
+//			{"hello", "test", "v1.0"},//model
+
+			{"1", "2"},//shelves
+			{"1", "2", "3"},//numberOfDrawsPerShelf
+
+			{"1", "2"},//draw
+			{"1", "2", "3"},//heightOfDraw
+			{"1", "2", "3"},//widthOfDraw
+			{"1", "2", "3"},//lengthOfDraw
+
+			//VLMSoftware *********************************
+			{"1","9"},//heightOfVLM
+			{"1","9"},//widthOfVLM
+			{"1","9"},//lengthOfVLM
+			{"frontBack", "twoFloors"},//bayLocation
+			{"1","9"},//numberOfBays
+
+			{"1", "2"},//vLMInterfaceController
+			{"hello", "test", "v1.0"},//driverVersion
+			{"hello", "test", "v1.0"},//competibleModel
+
+			{"1", "2"},//bufferManager
+			{"1","9"},//bufferCapacity
+
+			{"1", "2"},//scannerController
+			{"v1.0"},//driverVersion
+			{"hello", "test", "v1.0"},//competibleModel
+			{"BarCodeReaderController", "QRScannerController"},//ScannerController
+
+			{"1", "2"},//extracterController
+			{"1","9"},//verticalSpeedLimit
+			{"1","9"},//weightLimit
+			{"1","9"},//widthLimit
+			{"1","9"},//extractionSpeed
+			{"single", "double"},//bayType
+			{"1","9"},//verticalMovementSpeed
+	};

@@ -1,0 +1,276 @@
+context Carousel inv:   (self.lightToPick->size() = 1 and self.rotator->size() = 1 and self.carouselInterface->size( ) = 1 and self.overlTrack->size() = 1)
+context Carousel inv:  (self.type = CarouselTYPE::horizental and self.rotator->forAll(r:Rotator|r.rotationDirection = RotationDirections::anticlockwise)) 
+or  
+(self.type = CarouselTYPE::vertical and self.rotator->forAll(r:Rotator|r.rotationDirection = RotationDirections::clockwise))
+
+context Carousel inv:  self.bins->forAll(b:Bins|self.bins->size() = b.overlTrack.weightLimit)
+context Bins inv:  (self.binHeight < self.overlTrack.binsLimit ) and (self.binLength < self.overlTrack.binsLimit ) and (self.binWidth < self.overlTrack.binsLimit )
+context Bins inv:  (self.overlTrack.weightLimit < 3 and self.shelves->size() = 3) or  (self.overlTrack.weightLimit >=3 and self.shelves->size() = 5) 
+context CarouselInterface inv:  (self.size > 10 and self.interfaceType = CarouselInterfaceType::touch) or (self.size <= 10 and self.interfaceType = CarouselInterfaceType::buttons)
+context UMMLoad inv:  (self.cranes->size() >7 and self.ASRSType = ASRSType::unitLoad ) or ((self.cranes->size() <= 7 and self.cranes->size() >3) and self.ASRSType = ASRSType::miniLoad) 
+or (self.cranes->size() <= 3 and self.ASRSType = ASRSType::microload)
+context UMMLoad inv:  self.aisels->size() = self.sensor->size()
+context UMMLoad inv:  self.shelves->size() = self.cranes->size()
+context UMMLoad inv:  ((self.typeOfProduct = ProductType::Pallets or self.typeOfProduct =ProductType::Trays) and self.ASRSType = ASRSType::microload) or ((self.typeOfProduct = ProductType::Totes or self.typeOfProduct =ProductType::Cartons) and self.ASRSType = ASRSType::miniLoad)
+or ((self.typeOfProduct = ProductType::Contrainers or self.typeOfProduct =ProductType::Hybrid) and self.ASRSType = ASRSType::unitLoad)
+context UMMLoad inv:  ((self.ASRSType = ASRSType::unitLoad) and self.sensor->forAll(s:UMMSensor|s.oclIsTypeOf(DistanceSensor)))
+or 
+((self.ASRSType = ASRSType::microload) and self.sensor->forAll(s:UMMSensor|s.oclIsTypeOf(DistanceSensor)))
+context UMMLoad inv:  (self.ASRSType = ASRSType::microload implies self.cranes->forAll(c:Crane|c.craneType = CraneType::microLoadCrane) )
+and 
+(self.ASRSType = ASRSType::miniLoad implies self.cranes->forAll(c:Crane|c.craneType = CraneType::miniLoadCrane) )
+and 
+(self.ASRSType = ASRSType::unitLoad implies self.cranes->forAll(c:Crane|c.craneType = CraneType::unitLoadCrane))
+context Crane inv:  self.lifter->forAll(d:Lifter| d.maxWeightofLoad * self.lifter->size() = self.maxWeighLimit)
+context Crane inv:  (self.craneType = CraneType::unitLoadCrane and self.lifter ->forAll(d:Lifter| d.maxWidthOfLoad = 100 and d.maxHeightOfLoad = 100 and d.maxLengthOfLoad = 100) )
+or 
+(self.craneType = CraneType::miniLoadCrane and self.lifter ->forAll(d:Lifter| d.maxWidthOfLoad = 50 and d.maxHeightOfLoad = 50 and d.maxLengthOfLoad = 50)  )
+or 
+(self.craneType = CraneType::microLoadCrane and self.lifter ->forAll(d:Lifter| d.maxWidthOfLoad = 30 and d.maxHeightOfLoad = 30 and d.maxLengthOfLoad = 30)  )
+
+context Crane inv:  self.lifter->forAll(d:Lifter|d.verticalSpeed > 10)
+context Lifter inv:  (self.orderPicker->size() > 5 and self.orderPicker->forAll(o: Fork|o.forkType = ForkType::fixed) )
+or  
+(self.orderPicker->size() <= 5 and  self.orderPicker->forAll(o: Fork|o.forkType = ForkType::moveable) )
+context Fork inv:  (self.doubleLoadHandling = true and self.forkType = ForkType::fixed) or (self.doubleLoadHandling = false and self.forkType = ForkType::moveable)
+context VLM inv:   (self.verticleLift->size() = 1 and self.vLMInterface->size() = 1 and self.orderPIcker->size() = 1)
+context VLM inv:  (self.vLMInterface->forAll(v:VLMInterface|v.moveable = true) and self.scanner->forAll(s:Scanner|s.scannerType = ScannerType::handheld) ) or 
+(self.vLMInterface->forAll(v:VLMInterface|v.moveable = false) and self.scanner->forAll(s:Scanner|s.scannerType = ScannerType::fixed) ) 
+context VLM inv:  self.verticleLift->forAll(v:Extracter|v.widthLimit = self.widthOfVLM)
+context VLM inv:  (self.bayLocation = BayLocationType::frontBack and self.verticleLift->size() = 0) or (self.bayLocation = BayLocationType::twoFloors and self.verticleLift->size() > 0)
+context VLM inv:  self.orderPIcker->forAll(o:OrderPIcker|o.heightOfPickerStage = self.heightOfVLM)
+context VLM inv:  ((self.scanner->size( ) > 3 or self.shelves->size() > 3) and self.vLMInterface->forAll(v:VLMInterface|v.displaySize = 100) ) or  
+((self.scanner->size( ) <= 3 or self.shelves->size() <= 3) and self.vLMInterface->forAll(v:VLMInterface|v.displaySize = 30) )
+context Extracter inv:  (self.verticalMovementSpeed = self.verticalSpeedOfExtracter ) and (self.extractionSpeed = self.verticalMovementSpeed)
+context VMLShelves inv:  self.numberOfDrawsPerShelf = self.draw->size()
+context VMLShelves inv:  (self.numberOfDrawsPerShelf = 2 and self.extracter.bay = BayType::double) or (self.numberOfDrawsPerShelf = 1 and self.extracter.bay = BayType::single)
+context Scanner inv:  (self.scannerType = ScannerType::handheld and self.oclIsTypeOf(BarCodeScanner)) or (self.scannerType = ScannerType::fixed and self.oclIsTypeOf(QRScanner))
+context AIDC inv:  self.cubingWeighing->size() = self.aIDCApp.cubingWeighingCalculator->size()
+context AIDC inv:  self.oneDimensionalBarcodeSymbologies ->size() = self.aIDCApp.oneDimensionalBarcodeSymbologiesController->size()
+context AIDC inv:  self.rFID->size() = self.aIDCApp.rFIDController->size()
+context AIDC inv:  self.twoDimensionalBarcodeSymbologies->size() = self.aIDCApp.twoDimensionalBarcodeSymbologiesController->size()
+context AIDC inv:  self.voiceRecongnizers->size() = self.aIDCApp.voiceRecongnizersController->size()
+context AIDC inv:  self.oneDimensionalBarcodeSymbologies->size()  + self.twoDimensionalBarcodeSymbologies->size() = 1
+
+context AIDC inv:  (self.oneDimensionalBarcodeSymbologies->forAll(o:OneDimensionalBarcodeSymbology| o.barCodeType = OneDBarCodeType::codabar) and 
+self.aIDCApp.oneDimensionalBarcodeSymbologiesController->forAll(s:OneDimensionalBarcodeSymbologyController|s.barCodeType = OneDBarCodeType::codabar)) 
+or 
+(self.oneDimensionalBarcodeSymbologies->forAll(o:OneDimensionalBarcodeSymbology| o.barCodeType = OneDBarCodeType::code128) and 
+self.aIDCApp.oneDimensionalBarcodeSymbologiesController->forAll(s:OneDimensionalBarcodeSymbologyController|s.barCodeType = OneDBarCodeType::code128)) 
+or 
+(self.oneDimensionalBarcodeSymbologies->forAll(o:OneDimensionalBarcodeSymbology| o.barCodeType = OneDBarCodeType::code39) and 
+self.aIDCApp.oneDimensionalBarcodeSymbologiesController->forAll(s:OneDimensionalBarcodeSymbologyController|s.barCodeType = OneDBarCodeType::code39)) 
+or 
+(self.oneDimensionalBarcodeSymbologies->forAll(o:OneDimensionalBarcodeSymbology| o.barCodeType = OneDBarCodeType::code93) and 
+self.aIDCApp.oneDimensionalBarcodeSymbologiesController->forAll(s:OneDimensionalBarcodeSymbologyController|s.barCodeType = OneDBarCodeType::code93)) 
+or 
+(self.oneDimensionalBarcodeSymbologies->forAll(o:OneDimensionalBarcodeSymbology| o.barCodeType = OneDBarCodeType::EANCode) and 
+self.aIDCApp.oneDimensionalBarcodeSymbologiesController->forAll(s:OneDimensionalBarcodeSymbologyController|s.barCodeType = OneDBarCodeType::EANCode)) 
+or 
+(self.oneDimensionalBarcodeSymbologies->forAll(o:OneDimensionalBarcodeSymbology| o.barCodeType = OneDBarCodeType::GS1Databar) and 
+self.aIDCApp.oneDimensionalBarcodeSymbologiesController->forAll(s:OneDimensionalBarcodeSymbologyController|s.barCodeType = OneDBarCodeType::GS1Databar)) 
+or 
+(self.oneDimensionalBarcodeSymbologies->forAll(o:OneDimensionalBarcodeSymbology| o.barCodeType = OneDBarCodeType::ITF) and 
+self.aIDCApp.oneDimensionalBarcodeSymbologiesController->forAll(s:OneDimensionalBarcodeSymbologyController|s.barCodeType = OneDBarCodeType::ITF)) 
+or 
+(self.oneDimensionalBarcodeSymbologies->forAll(o:OneDimensionalBarcodeSymbology| o.barCodeType = OneDBarCodeType::MSIPlessey) and 
+self.aIDCApp.oneDimensionalBarcodeSymbologiesController->forAll(s:OneDimensionalBarcodeSymbologyController|s.barCodeType = OneDBarCodeType::MSIPlessey)) 
+or 
+(self.oneDimensionalBarcodeSymbologies->forAll(o:OneDimensionalBarcodeSymbology| o.barCodeType = OneDBarCodeType::UPC) and 
+self.aIDCApp.oneDimensionalBarcodeSymbologiesController->forAll(s:OneDimensionalBarcodeSymbologyController|s.barCodeType = OneDBarCodeType::UPC)) 
+
+
+context AIDC inv:  (self.twoDimensionalBarcodeSymbologies->forAll(o:TwoDimensionalBarcodeSymbology| o.barCodeType = TwoDBarCodeType::AZTEC) and 
+self.aIDCApp.twoDimensionalBarcodeSymbologiesController->forAll(s:TwoDimensionalBarcodeSymbologyController|s.barCodeType = TwoDBarCodeType::AZTEC))
+or
+(self.twoDimensionalBarcodeSymbologies->forAll(o:TwoDimensionalBarcodeSymbology| o.barCodeType = TwoDBarCodeType::dataMatrixCode) and 
+self.aIDCApp.twoDimensionalBarcodeSymbologiesController->forAll(s:TwoDimensionalBarcodeSymbologyController|s.barCodeType = TwoDBarCodeType::dataMatrixCode))
+or
+(self.twoDimensionalBarcodeSymbologies->forAll(o:TwoDimensionalBarcodeSymbology| o.barCodeType = TwoDBarCodeType::PDF417) and 
+self.aIDCApp.twoDimensionalBarcodeSymbologiesController->forAll(s:TwoDimensionalBarcodeSymbologyController|s.barCodeType = TwoDBarCodeType::PDF417))
+or
+(self.twoDimensionalBarcodeSymbologies->forAll(o:TwoDimensionalBarcodeSymbology| o.barCodeType = TwoDBarCodeType::QRCode) and 
+self.aIDCApp.twoDimensionalBarcodeSymbologiesController->forAll(s:TwoDimensionalBarcodeSymbologyController|s.barCodeType = TwoDBarCodeType::QRCode))
+context AIDC inv:  (self.oneDimensionalBarcodeSymbologies->forAll(o:OneDimensionalBarcodeSymbology| o.scanner= ScannerPositionType::fixed) and 
+self.aIDCApp.oneDimensionalBarcodeSymbologiesController->forAll(s:OneDimensionalBarcodeSymbologyController|s.scanner= ScannerPositionType::fixed))
+or 
+(self.oneDimensionalBarcodeSymbologies->forAll(o:OneDimensionalBarcodeSymbology| o.scanner= ScannerPositionType::mobile) and 
+self.aIDCApp.oneDimensionalBarcodeSymbologiesController->forAll(s:OneDimensionalBarcodeSymbologyController|s.scanner= ScannerPositionType::mobile))
+
+context AIDC inv:  (self.twoDimensionalBarcodeSymbologies->forAll(o:TwoDimensionalBarcodeSymbology| o.scanner= ScannerPositionType::fixed) and  
+self.aIDCApp.twoDimensionalBarcodeSymbologiesController->forAll(s:TwoDimensionalBarcodeSymbologyController|s.scanner= ScannerPositionType::fixed)) 
+or 
+(self.twoDimensionalBarcodeSymbologies->forAll(o:TwoDimensionalBarcodeSymbology| o.scanner= ScannerPositionType::mobile) and  
+self.aIDCApp.twoDimensionalBarcodeSymbologiesController->forAll(s:TwoDimensionalBarcodeSymbologyController|s.scanner= ScannerPositionType::mobile)) 
+context AIDC inv:  (self.rFID->forAll(o:RFID| o.scanner= ScannerPositionType::fixed) and  
+self.aIDCApp.rFIDController->forAll(s:RFIDController|s.scanner= ScannerPositionType::fixed))
+or 
+(self.rFID->forAll(o:RFID| o.scanner= ScannerPositionType::mobile) and 
+self.aIDCApp.rFIDController->forAll(s:RFIDController|s.scanner= ScannerPositionType::mobile))
+context OneDimensionalBarcodeSymbology inv:  ((self.barCodeType = OneDBarCodeType::codabar or self.barCodeType = OneDBarCodeType::code128 or self.barCodeType = OneDBarCodeType::code39 or self.barCodeType = OneDBarCodeType::code93) and self.scanner = ScannerPositionType::fixed)
+or
+((self.barCodeType = OneDBarCodeType::EANCode or self.barCodeType = OneDBarCodeType::GS1Databar or self.barCodeType = OneDBarCodeType::ITF or self.barCodeType = OneDBarCodeType::MSIPlessey or self.barCodeType = OneDBarCodeType::UPC) and self.scanner = ScannerPositionType::fixed)
+
+context TwoDimensionalBarcodeSymbology inv:  ((self.barCodeType = TwoDBarCodeType::AZTEC or self.barCodeType = TwoDBarCodeType::dataMatrixCode) and self.scanner = ScannerPositionType::fixed)
+or
+((self.barCodeType =TwoDBarCodeType::PDF417 or self.barCodeType = TwoDBarCodeType::QRCode) and self.scanner = ScannerPositionType::fixed)
+
+context AGV inv:  self.connectivity = self.aVGApp.Connectivity
+context AGV inv:  self.conveyor->size() = self.aVGApp.conveyorApp->size()
+context AGV inv:  self.sensors->size() = self.aVGApp.sensorController->size()
+context AGV inv:  (self.nevigation->forAll(d: Navigation|d.oclIsTypeOf(Wired)) and 
+self.aVGApp.navigationImplementation ->forAll(s:NavigationImplementation|s.oclIsTypeOf(WiredNavigationImplementation)))
+or
+(self.nevigation->forAll(d: Navigation|d.oclIsTypeOf(GeoGuidance)) and  
+self.aVGApp.navigationImplementation ->forAll(s:NavigationImplementation|s.oclIsTypeOf(GeoGuidanceNavigationImplementation)))
+or
+(self.nevigation->forAll(d: Navigation|d.oclIsTypeOf(VisionGuidance)) and 
+self.aVGApp.navigationImplementation ->forAll(s:NavigationImplementation|s.oclIsTypeOf(VisionGuidanceNavigationImplementation)))
+or
+(self.nevigation->forAll(d: Navigation|d.oclIsTypeOf(NaturalFeaturesNavigation)) and 
+self.aVGApp.navigationImplementation ->forAll(s:NavigationImplementation|s.oclIsTypeOf(NaturalFeaturesNavigationImplementation)))
+or
+(self.nevigation->forAll(d: Navigation|d.oclIsTypeOf(InertialNavigation)) and 
+self.aVGApp.navigationImplementation ->forAll(s:NavigationImplementation|s.oclIsTypeOf(InertialNavigationImplementation)))
+or
+(self.nevigation->forAll(d: Navigation|d.oclIsTypeOf(GuideTape)) and 
+self.aVGApp.navigationImplementation ->forAll(s:NavigationImplementation|s.oclIsTypeOf(GuideTapeNavigationImplentation)))
+or
+(self.nevigation->forAll(d: Navigation|d.oclIsTypeOf(LaserTargetNavigation)) and 
+self.aVGApp.navigationImplementation ->forAll(s:NavigationImplementation|s.oclIsTypeOf(LaserTargetNavigationImplementation)))
+context AGV inv:  self.steeringControl->size() = self.aVGApp.steeringControllerImplementation->size()
+context AGV inv:  self.systemManagermentInterface->size()= self.aVGApp.systemManagermentInterfaceImplementation->size()
+context AGV inv:  self.vehicle->size()=self.aVGApp.vehicleController->size()
+context AGV inv:  self.trafficControll->size() = self.aVGApp.trafficControlImplementation->size()
+context AGV inv:  (self.sensors->forAll(d: Sensor|d.oclIsTypeOf(MultiRayLEDScanner)) and  
+self.aVGApp.sensorController ->forAll(s:SensorController|s.oclIsTypeOf(MultiRayLEDScannerController)))
+or
+(self.sensors->forAll(d: Sensor|d.oclIsTypeOf(LaserScanner)) and 
+self.aVGApp.sensorController ->forAll(s:SensorController|s.oclIsTypeOf(LaserScannerController)))
+or
+(self.sensors->forAll(d: Sensor|d.oclIsTypeOf(MagneticGuideSensor)) and 
+self.aVGApp.sensorController ->forAll(s:SensorController|s.oclIsTypeOf(MagneticGuideSensorController)))
+or
+(self.sensors->forAll(d: Sensor|d.oclIsTypeOf(VisionStereoCamera)) and 
+self.aVGApp.sensorController ->forAll(s:SensorController|s.oclIsTypeOf(VisionStereoCameraController)))
+context AGV inv:  (self.trafficControll->forAll(d: TrafficControl|d.oclIsTypeOf(ZoneControl)) and  
+self.aVGApp.trafficControlImplementation ->forAll(s:TrafficControlImplementation|s.oclIsTypeOf(ZoneControlImplementation)))
+or 
+(self.trafficControll->forAll(d: TrafficControl|d.oclIsTypeOf(CombinationControl)) and  
+self.aVGApp.trafficControlImplementation ->forAll(s:TrafficControlImplementation|s.oclIsTypeOf(CombinationControlImplementation)))
+
+context AGV inv:  (self.vehicle->forAll(d: Vehicle|d.oclIsTypeOf(AssemblyLineVehicle)) and  
+self.aVGApp.vehicleController ->forAll(s:VehicleController|s.oclIsTypeOf(AssemblyLineVehicleController)))
+or 
+(self.vehicle->forAll(d: Vehicle|d.oclIsTypeOf(LightLoadAGV)) and 
+self.aVGApp.vehicleController ->forAll(s:VehicleController|s.oclIsTypeOf(LightLoadAGVController)))
+or
+(self.vehicle->forAll(d: Vehicle|d.oclIsTypeOf(ForkTruck)) and 
+self.aVGApp.vehicleController ->forAll(s:VehicleController|s.oclIsTypeOf(ForkTruckController)))
+or
+(self.vehicle->forAll(d: Vehicle|d.oclIsTypeOf(PalletTruck)) and 
+self.aVGApp.vehicleController ->forAll(s:VehicleController|s.oclIsTypeOf(PalletTruckController)))
+or
+(self.vehicle->forAll(d: Vehicle|d.oclIsTypeOf(UnitLoadVehicle)) and 
+self.aVGApp.vehicleController ->forAll(s:VehicleController|s.oclIsTypeOf(UnitLoadVehicleController)))
+or
+(self.vehicle->forAll(d: Vehicle|d.oclIsTypeOf(TowingVehicle)) and 
+self.aVGApp.vehicleController ->forAll(s:VehicleController|s.oclIsTypeOf(TowingVehicleController)))
+context AGV inv:  (self.systemManagermentInterface->forAll(d: SystemManagermentInterface|d.interface = AGVInterfaceType::locatorPannel) and  
+self.aVGApp.systemManagermentInterfaceImplementation ->forAll(s:SystemManagermentInterfaceImplementation|s.interface = AGVInterfaceType::locatorPannel))
+or 
+(self.systemManagermentInterface->forAll(d: SystemManagermentInterface|d.interface = AGVInterfaceType::CRTColorGraphicDisplay) and  
+self.aVGApp.systemManagermentInterfaceImplementation ->forAll(s:SystemManagermentInterfaceImplementation|s.interface = AGVInterfaceType::CRTColorGraphicDisplay))
+or  
+(self.systemManagermentInterface->forAll(d: SystemManagermentInterface|d.interface = AGVInterfaceType::centralLoging) and  
+self.aVGApp.systemManagermentInterfaceImplementation ->forAll(s:SystemManagermentInterfaceImplementation|s.interface = AGVInterfaceType::centralLoging))
+context AGV inv:  (self.steeringControl->forAll(d: SteeringControl|d.steeringType = SteeringControlType::differentialSteeringControl) and  
+self.aVGApp.steeringControllerImplementation ->forAll(s:SteeringControllerImplementation|s.steeringType = SteeringControlType::differentialSteeringControl))
+or 
+(self.steeringControl->forAll(d: SteeringControl|d.steeringType = SteeringControlType::steerdWheelControl) and  
+self.aVGApp.steeringControllerImplementation ->forAll(s:SteeringControllerImplementation|s.steeringType = SteeringControlType::steerdWheelControl))
+or 
+(self.steeringControl->forAll(d: SteeringControl|d.steeringType = SteeringControlType::hybrid) and  
+self.aVGApp.steeringControllerImplementation ->forAll(s:SteeringControllerImplementation|s.steeringType = SteeringControlType::hybrid))
+context AGV inv:  self.nevigation->size() = self.aVGApp.navigationImplementation->size()
+context Navigation inv:  (self.pathDecision = PathDecisionMethod::frequencySelectMode and (self.oclIsTypeOf(GeoGuidance) or self.oclIsTypeOf(VisionGuidance))) or (self.pathDecision= PathDecisionMethod::magenaticMode and 
+(self.oclIsTypeOf(NaturalFeaturesNavigation) or self.oclIsTypeOf(InertialNavigation))) or (self.pathDecision= PathDecisionMethod::pathSelectMode and 
+(self.oclIsTypeOf(Wired) or self.oclIsTypeOf(GuideTape)))
+context Vehicle inv:  self.volumeLimit = self.heightLimit * self.weightLimit
+context Vehicle inv:  ((self.oclIsTypeOf(AssemblyLineVehicle) or self.oclIsTypeOf(LightLoadAGV)) and  self.batteryCharging = BatteryChargingType::autoamticOppertunityCharging)
+or 
+((self.oclIsTypeOf(ForkTruck) or self.oclIsTypeOf(PalletTruck)) and  self.batteryCharging = BatteryChargingType::automaticBatterySwap)
+or  
+((self.oclIsTypeOf(UnitLoadVehicle) or self.oclIsTypeOf(TowingVehicle)) and  self.batteryCharging = BatteryChargingType::manualBatterySwap)
+context Vehicle inv:  (self.speed = 50 and (self.oclIsTypeOf(ForkTruck) or self.oclIsTypeOf(PalletTruck))) or 
+ (self.speed = 80 and (self.oclIsTypeOf(TowingVehicle) or self.oclIsTypeOf(LightLoadAGV))) or 
+ (self.speed = 150 and (self.oclIsTypeOf(AssemblyLineVehicle) or self.oclIsTypeOf(UnitLoadVehicle)))
+
+context ASRS inv:  self.oclIsTypeOf(UMMLoad) implies self.aSRSApp.oclIsTypeOf(UMMLoadApp)
+context CarouselApp inv:   (self.lightToPickController->size() = 1 and self.rotatorController->size() = 1 and self.carouselInterfaceController->size( ) = 1)
+context CarouselApp inv:  (self.type = CarouselTYPE::horizental and self.rotatorController->forAll(r:RotatorController|r.rotationDirection = RotationDirections::anticlockwise)) 
+or  
+(self.type = CarouselTYPE::vertical and self.rotatorController->forAll(r:RotatorController|r.rotationDirection = RotationDirections::clockwise))
+
+context CarouselInterfaceController inv:  self.driverVersion = self.competibleModel
+context LightToPickController inv:  self.driverVersion = self.competibleModel
+context UMMLoadApp inv:  ((self.craneController->size() >7 and self.ASRSType =ASRSType::unitLoad) ) 
+or ((self.craneController->size() <= 7 and self.craneController->size() >3) and self.ASRSType = ASRSType::miniLoad)
+or (self.craneController->size() <= 3 and self.ASRSType = ASRSType::microload)
+context UMMLoadApp inv:  self.craneController->size() = self.sensorController->size()
+context UMMLoadApp inv:  ((self.productType= ProductType::Pallets or self.productType =ProductType::Trays) and self.ASRSType = ASRSType::microload) or ((self.productType = ProductType::Totes or self.productType =ProductType::Cartons) and self.ASRSType = ASRSType::miniLoad)
+or ((self.productType = ProductType::Contrainers or self.productType =ProductType::Hybrid) and self.ASRSType = ASRSType::unitLoad)
+
+context UMMLoadApp inv:  ((self.ASRSType = ASRSType::unitLoad) and self.sensorController->forAll(s:UMMSensorController|s.oclIsTypeOf(DistanceSensorController)))
+or  
+((self.ASRSType = ASRSType::microload) and self.sensorController->forAll(s:UMMSensorController|s.oclIsTypeOf(DistanceSensorController)))
+
+context UMMLoadApp inv:  (self.ASRSType = ASRSType::microload and  self.craneController->forAll(c:CraneController|c.craneType = CraneType::microLoadCrane) )
+or  
+(self.ASRSType = ASRSType::miniLoad and self.craneController->forAll(c:CraneController|c.craneType = CraneType::miniLoadCrane) )
+or  
+(self.ASRSType = ASRSType::unitLoad and self.craneController->forAll(c:CraneController|c.craneType = CraneType::unitLoadCrane))
+context CraneController inv:  self.lifterController->forAll(d:LifterController| d.maxWeightOfLoad * self.lifterController->size() = self.maxWeightLimit)
+context CraneController inv:  (self.craneType = CraneType::unitLoadCrane and self.lifterController ->forAll(d:LifterController| d.maxWidthOfLoad = 100 and d.maxHeightOfLoad = 100 and d.maxLengthOfLoad = 100) )
+or  
+(self.craneType = CraneType::miniLoadCrane and self.lifterController ->forAll(d:LifterController| d.maxWidthOfLoad = 50 and d.maxHeightOfLoad = 50 and d.maxLengthOfLoad = 50) )
+or  
+(self.craneType = CraneType::microLoadCrane and self.lifterController ->forAll(d:LifterController| d.maxWidthOfLoad = 30 and d.maxHeightOfLoad = 30 and d.maxLengthOfLoad = 30)) 
+
+context LifterController inv:  self.verticleSpeed > 10
+context LifterController inv:  (self.forkController->size() > 5 and self.forkController->forAll(o: ForkController|o.forkType = ForkType::fixed) )
+or  
+(self.forkController->size() <= 5 and  self.forkController->forAll(o: ForkController|o.forkType = ForkType::moveable) )
+context ForkController inv:  (self.doubleLoadHandling = true and self.forkType = ForkType::fixed) or (self.doubleLoadHandling = false and self.forkType = ForkType::moveable)
+context VLMApp inv:  (self.vLMInterfaceController->size() = 1 and self.bufferManager->size() = 1 and self.extracterController->size() = 1)
+context VLMApp inv:  self.extracterController->forAll(v:ExtracterController|v.widthLimit = self.widthOfVLM)
+
+context VLMApp inv:  (self.bayLocation = BayLocationType::frontBack and self.extracterController->size() = 0) or (self.bayLocation = BayLocationType::twoFloors and self.extracterController->size() > 0)
+context ExtracterController inv:  (self.verticalMovementSpeed = self.verticalSpeedLimit ) and (self.extractionSpeed = self.verticalMovementSpeed)
+context AIDCApp inv:  self.oneDimensionalBarcodeSymbologiesController->forAll(o:OneDimensionalBarcodeSymbologyController|self.rFIDController->forAll(r:RFIDController|o.driverVersion = r.driverVersion))
+context AIDCApp inv:  self.twoDimensionalBarcodeSymbologiesController->forAll(o:TwoDimensionalBarcodeSymbologyController|self.rFIDController->forAll(r:RFIDController|o.driverVersion = r.driverVersion))
+context AIDCApp inv:  self.voiceRecongnizersController->forAll(o:VoiceRecongnizerController|self.rFIDController->forAll(r:RFIDController|o.driverVersion = r.driverVersion))
+context OneDimensionalBarcodeSymbologyController inv:  self.driverVersion = self.competibleModel
+context TwoDimensionalBarcodeSymbologyController inv:  self.driverVersion = self.competibleModel
+context RFIDController inv:  self.driverVersion = self.competibleModel
+context VoiceRecongnizerController inv:  self.driverVersion = self.competibleModel
+context AVGApp inv:  self.vehicleController.heightLimit =self.aGV.vehicle.heightLimit and
+self.vehicleController.weightLimit =self.aGV.vehicle.weightLimit and
+self.vehicleController.speed =self.aGV.vehicle.speed and
+self.vehicleController.volumeLimit =self.aGV.vehicle.volumeLimit and
+self.vehicleController.batteryCharging=self.aGV.vehicle.batteryCharging
+context AVGApp inv:  self.Connectivity= self.aGV.connectivity and (self.conveyorApp->size() = self.aGV.conveyor->size())
+context AVGApp inv:  self.steeringControllerImplementation.steeringType = self.aGV.steeringControl.steeringType
+context AVGApp inv:  self.sensorController.competibleModel=self.aGV.sensors.model and 
+self.sensorController->size()= self.aGV.sensors->size()
+
+context AVGApp inv:  self.systemManagermentInterfaceImplementation.interface=self.aGV.systemManagermentInterface.interface
+context AVGApp inv:  self.navigationImplementation.pathDecision=self.aGV.nevigation.pathDecision
+context AutomaticGuidedVehicle inv:  self.aVGApp->size() = self.aGV->size()
+context AutomaticIdentificationDataCollection inv:  self.aIDC->size() = self.aIDCApp->size()
+context Conveyors inv:  self.conveyor->size() = self.conveyorApp->size()
+context HandlingSystems inv:  self.operatingMode = OperatingMode::fullyAutomated implies (self.automatedStorageRetrievalSystem->size() = 1 and self.automaticGuidedVehicle->size() = 1 and self.automaticIdentificationDataCollection->size() = 1)
+context HandlingSystems inv:  self.operatingMode = OperatingMode::hybrid implies (self.automatedStorageRetrievalSystem->size() = 1 and self.automaticGuidedVehicle->size() + self.automaticIdentificationDataCollection->size() = 1)
+context HandlingSystems inv:  self.operatingMode = OperatingMode::semiAutomated implies (self.automatedStorageRetrievalSystem->size() + self.automaticGuidedVehicle->size() + self.automaticIdentificationDataCollection->size() = 1)
+context AutomaticStorageRetrievalSystem inv:  self.aSRS->size() = self.aSRSApp->size()
+context AutomaticStorageRetrievalSystem inv:  self.numberofIOPoints = self.aSRS->size()
